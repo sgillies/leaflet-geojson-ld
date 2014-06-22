@@ -18,7 +18,7 @@
 
   /* Load hull area GeoJSON and add to map */
   $.getJSON($('link[rel="features"]').attr("href"), function(data) {
-    L.geoJsonLd(data).addTo(map);
+    L.geoJson(data).addTo(map);
   });
 
   </script>
