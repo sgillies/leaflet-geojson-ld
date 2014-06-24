@@ -45,8 +45,9 @@ L.GeoJSONLD = L.GeoJSON.extend({
         this._layers = {};
         if (geojson) {
             geojson['@context'] = baseContext;
+            var layer = this;
             jsonld.expand(
-                geojson, function(err, expanded) { this.addData(expanded); });
+                geojson, function(err, expanded) { layer.addData(expanded); });
         }
     },
 
