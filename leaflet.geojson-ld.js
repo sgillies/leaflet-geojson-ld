@@ -10,6 +10,7 @@ L.GeoJSONLD = L.GeoJSON.extend({
         this._layers = {};
         if (geojson) {
             this.addData(geojson);
+        }
     },
 
     addData: function (geojson) {
