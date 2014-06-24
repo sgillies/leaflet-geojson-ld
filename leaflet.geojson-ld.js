@@ -94,7 +94,7 @@ L.extend(L.GeoJSONLD, {
             coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
             latlng, latlngs, i, len;
 
-        var geom_type = geometry['@type'] || geometry['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']
+        var geom_type = geometry['@type'] || geometry['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'];
         switch (geom_type) {
         case 'http://ld.geojson.org/vocab#Point':
             latlng = coordsToLatLng(coords);
