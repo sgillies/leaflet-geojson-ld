@@ -1,5 +1,17 @@
 L.GeoJSONLD = L.GeoJSON.extend({
 
+    initialize: function (geojson, options) {
+        if (!options.onEachFeature) {
+            options.onEachFeature = function(feature, layer) {
+                layer.bindPopup('<h3>' + feature.properties.NAME + '</h3>');
+            }
+        }
+        L.setOptions(this, options);
+        this._layers = {};
+        if (geojson) {
+            this.addData(geojson);
+    },
+
     addData: function (geojson) {
         var features = L.Util.isArray(geojson) ? geojson : geojson.features,
             i, len, feature;
