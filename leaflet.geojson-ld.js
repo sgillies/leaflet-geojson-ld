@@ -1,12 +1,12 @@
 L.GeoJSONLD = L.GeoJSON.extend({
 
     initialize: function (geojson, options) {
-        if (!options) {
-            var options = {};
+        if (options === undefined) {
+            options = {};
         }
         if (!options.onEachFeature) {
             options.onEachFeature = function(feature, layer) {
-                layer.bindPopup('<h3>' + feature.properties.NAME + '</h3>');
+                layer.bindPopup('<h3>' + feature.properties.LABEL + '</h3>');
             }
         }
         L.setOptions(this, options);
