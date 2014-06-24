@@ -1,7 +1,10 @@
 L.GeoJSONLD = L.GeoJSON.extend({
 
     initialize: function (geojson, options) {
-        if (!options || !options.onEachFeature) {
+        if (!options) {
+            options = {};
+        }
+        if (!options.onEachFeature) {
             options.onEachFeature = function(feature, layer) {
                 layer.bindPopup('<h3>' + feature.properties.NAME + '</h3>');
             }
