@@ -52,7 +52,7 @@ L.GeoJSONLD = L.GeoJSON.extend({
     },
 
     addData: function (geojson) {
-        var features = L.Util.isArray(geojson) ? geojson : geojson['http://ld.geojson.org/vocab#features'][0],
+        var features = L.Util.isArray(geojson) ? geojson : geojson['http://ld.geojson.org/vocab#features'],
             i, len, feature;
 
         if (features) {
