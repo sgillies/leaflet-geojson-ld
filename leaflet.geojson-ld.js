@@ -70,8 +70,8 @@ L.GeoJSONLD = L.GeoJSON.extend({
 
         if (options.filter && !options.filter(geojson)) { return; }
 
-        var layer = L.GeoJSON.geometryToLayer(geojson, options);
-        layer.feature = L.GeoJSON.asFeature(geojson);
+        var layer = L.GeoJSONLD.geometryToLayer(geojson, options);
+        layer.feature = L.GeoJSONLD.asFeature(geojson);
 
         layer.defaultOptions = layer.options;
         this.resetStyle(layer);
