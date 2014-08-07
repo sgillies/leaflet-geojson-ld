@@ -1,4 +1,4 @@
-/**
+/**nd
  * A JavaScript implementation of the JSON-LD API.
  *
  * @author Dave Longley
@@ -2221,6 +2221,8 @@ Processor.prototype.expand = function(
 
   // recursively expand array
   if(_isArray(element)) {
+    // Escape if this is a coordinates array.
+    if (activeProperty === 'coordinates') { return element; }
     var rval = [];
     var container = jsonld.getContextValue(
       activeCtx, activeProperty, '@container');

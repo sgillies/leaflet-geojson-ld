@@ -44,10 +44,10 @@ L.GeoJSONLD = L.GeoJSON.extend({
         L.setOptions(this, options);
         this._layers = {};
         if (geojson) {
-            geojson['@context'] = baseContext;
+            //geojson['@context'] = baseContext;
             var layer = this;
-            jsonld.compact(
-                geojson, function(err, compacted) { layer.addData(compacted); });
+            jsonld.expand(
+                geojson, {expandContext: baseContext, keepFreeFloatingNodes: true}, function(err, expanded) { layer.addData(expanded[0]); });
         }
     },
 
@@ -87,14 +87,14 @@ L.GeoJSONLD = L.GeoJSON.extend({
 L.extend(L.GeoJSONLD, {
     geometryToLayer: function (geojson, options) {
 
-        var geometry = geojson['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] === 'Feature' || geojson['@type'] === 'http://ld.geojson.org/vocab#Feature' ? geojson['http://ld.geojson.org/vocab#geometry'] : geojson,
-            coords = geometry['http://ld.geojson.org/vocab#coordinates'],
+        var geometry = geojson['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'].indexOf('http://ld.geojson.org/vocab#Feature') > -1 || geojson['@type'] === 'http://ld.geojson.org/vocab#Feature' ? geojson['http://ld.geojson.org/vocab#geometry'][0] : geojson,
+            coords = geometry['http://ld.geojson.org/vocab#coordinates'][0],
             layers = [],
             pointToLayer = options && options.pointToLayer,
             coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
             latlng, latlngs, i, len;
 
-        var geom_type = geometry['@type'] || 'http://ld.geojson.org/vocab#' + geometry['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'];
+        var geom_type = geometry['@type'] || geometry['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0];
         switch (geom_type) {
         case 'http://ld.geojson.org/vocab#Point':
             latlng = coordsToLatLng(coords);
@@ -121,9 +121,9 @@ L.extend(L.GeoJSONLD, {
             for (i = 0, len = geometry['http://ld.geojson.org/vocab#geometries'].length; i < len; i++) {
 
                 layers.push(this.geometryToLayer({
-                    'http://ld.geojson.org/vocab#geometry': geometry['http://ld.geojson.org/vocab#geometries'][i],
+                    'http://ld.geojson.org/vocab#geometry': geometry['http://ld.geojson.org/vocab#geometries'][0][i],
                     '@type': 'http://ld.geojson.org/vocab#Feature',
-                    'http://ld.geojson.org/vocab#properties': geojson['http://ld.geojson.org/vocab#properties']
+                    'http://ld.geojson.org/vocab#properties': geojson['http://ld.geojson.org/vocab#properties'][0]
                 }, options));
             }
             return new L.FeatureGroup(layers);
@@ -140,7 +140,7 @@ L.extend(L.GeoJSONLD, {
     },
 
     asFeature: function (geoJSON) {
-        if (geoJSON['@type'] === 'http://ld.geojson.org/vocab#Feature' || geoJSON['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] === 'Feature') {
+        if (geoJSON['@type'] === 'http://ld.geojson.org/vocab#Feature' || geoJSON['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'].indexOf('http://ld.geojson.org/vocab#Feature')) {
             return geoJSON;
         }
 
